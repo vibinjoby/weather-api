@@ -1,16 +1,19 @@
 const Sentry = require("@sentry/node");
 const axios = require("axios");
-const { BASE_URL } = require("../configs/constants");
 
 const fetchWeatherForCity = async (req, res) => {
   try {
     const { city } = req.params;
     const { data } = await axios.post(
-      `${BASE_URL}?q=${city}&appid=${process.env.APP_ID}`
+      `${process.env.WEATHER_API_URL}?q=${city}&appid=${process.env.APP_ID}`
     );
+    return res.json({ data }).end();
   } catch (error) {
     Sentry.captureException(error);
-    res.status(500).json({ error: `Server error ${error.message}` });
+    res
+      .status(500)
+      .json({ error: `Server error ${error.message}` })
+      .end();
   }
 };
 module.exports = {

@@ -3,12 +3,14 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const Sentry = require("@sentry/node");
+
+const { rateLimiterUsingThirdParty } = require("./middlewares/rateLimiter");
 require("dotenv").config();
 
 keys = module.exports = process.env;
 
 // CORS
-app.use(function (req, res, next) {
+app.use(function (_, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   res.setHeader(
@@ -24,10 +26,12 @@ app.use(function (req, res, next) {
 app.use(express.static(__dirname));
 app.use(express.json({ extended: true, limit: "50mb" }));
 
+//rate-limiter
+app.use(rateLimiterUsingThirdParty);
+
 //Error logging
 Sentry.init({
-  dsn:
-    "https://f126592690df46e28d048a3228a1de5b@o439611.ingest.sentry.io/5574557",
+  dsn: process.env.DSN,
   tracesSampleRate: 1.0,
 });
 
