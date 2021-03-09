@@ -1,5 +1,5 @@
 # weather-backend
 
 ## GET request
-### /weather/getWeatherByCity
+### /weather/getWeatherByCity/:city
 ##### required params city
