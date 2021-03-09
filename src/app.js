@@ -7,8 +7,6 @@ const Sentry = require("@sentry/node");
 const { rateLimiterUsingThirdParty } = require("./middlewares/rateLimiter");
 require("dotenv").config();
 
-keys = module.exports = process.env;
-
 // CORS
 app.use(function (_, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
